@@ -1122,6 +1122,8 @@ public class PropsValues {
 
 	public static String LUCENE_MERGE_POLICY = PropsUtil.get(PropsKeys.LUCENE_MERGE_POLICY);
 
+	public static String LUCENE_MERGE_SCHEDULER = PropsUtil.get(PropsKeys.LUCENE_MERGE_SCHEDULER);
+
 	public static final boolean LUCENE_REPLICATE_WRITE = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.LUCENE_REPLICATE_WRITE));
 
 	public static final String LUCENE_STORE_TYPE = PropsUtil.get(PropsKeys.LUCENE_STORE_TYPE);
@@ -1613,8 +1615,6 @@ public class PropsValues {
 	public static final boolean SC_PRODUCT_COMMENTS_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.SC_PRODUCT_COMMENTS_ENABLED));
 
 	public static final boolean SCHEDULER_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.SCHEDULER_ENABLED));
-
-	public static final boolean SCHEMA_RUN_MINIMAL = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.SCHEMA_RUN_MINIMAL));
 
 	public static final String[] SCRIPTING_FORBIDDEN_CLASSES = PropsUtil.getArray(PropsKeys.SCRIPTING_FORBIDDEN_CLASSES);
 

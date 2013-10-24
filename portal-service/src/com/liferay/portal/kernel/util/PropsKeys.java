@@ -1515,6 +1515,8 @@ public interface PropsKeys {
 
 	public static final String LUCENE_MERGE_POLICY = "lucene.merge.policy";
 
+	public static final String LUCENE_MERGE_SCHEDULER = "lucene.merge.scheduler";
+
 	public static final String LUCENE_REPLICATE_WRITE = "lucene.replicate.write";
 
 	public static final String LUCENE_STORE_TYPE = "lucene.store.type";
@@ -2118,8 +2120,6 @@ public interface PropsKeys {
 	public static final String SCHEDULER_JOB_NAME_MAX_LENGTH = "scheduler.job.name.max.length";
 
 	public static final String SCHEMA_RUN_ENABLED = "schema.run.enabled";
-
-	public static final String SCHEMA_RUN_MINIMAL = "schema.run.minimal";
 
 	public static final String SCRIPTING_FORBIDDEN_CLASSES = "scripting.forbidden.classes";
 
