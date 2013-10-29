@@ -14,6 +14,35 @@
 
 package com.liferay.portal.image;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
+import java.awt.image.IndexColorModel;
+import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
+import java.awt.image.WritableRaster;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import javax.media.jai.RenderedImageAdapter;
+
+import net.jmge.gif.Gif89Encoder;
+
+import org.im4java.core.IMOperation;
+
 import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.image.ImageMagick;
 import com.liferay.portal.kernel.image.ImageTool;
@@ -30,39 +59,8 @@ import com.liferay.portal.model.Image;
 import com.liferay.portal.model.impl.ImageImpl;
 import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.PropsUtil;
-
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageDecoder;
-import com.sun.media.jai.codec.ImageEncoder;
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.awt.image.IndexColorModel;
-import java.awt.image.RenderedImage;
-import java.awt.image.SampleModel;
-import java.awt.image.WritableRaster;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import javax.imageio.ImageIO;
-
-import javax.media.jai.RenderedImageAdapter;
-
-import net.jmge.gif.Gif89Encoder;
-
-import org.im4java.core.IMOperation;
 
 /**
  * @author Brian Wing Shun Chan
@@ -406,26 +404,31 @@ public class ImageToolImpl implements ImageTool {
 	}
 
 	@Override
-	public ImageBag read(byte[] bytes) {
+	public ImageBag read(byte[] bytes) throws IOException {
 		RenderedImage renderedImage = null;
-		String type = TYPE_NOT_AVAILABLE;
-
-		Enumeration<ImageCodec> enu = ImageCodec.getCodecs();
-
-		while (enu.hasMoreElements()) {
-			ImageCodec codec = enu.nextElement();
-
-			if (codec.isFormatRecognized(bytes)) {
-				type = codec.getFormatName();
-
-				renderedImage = read(bytes, type);
-
-				break;
-			}
+		InputStream in = new ByteArrayInputStream(bytes);
+		ImageInputStream iis = ImageIO.createImageInputStream(in);
+		Iterator<?> iter = ImageIO.getImageReaders(iis);
+		BufferedImage image = null;
+		String formatName = null;
+		if (iter.hasNext()) {
+			ImageReader reader = (ImageReader) iter.next();
+			reader.setInput(iis);
+			image = reader.read(0);
+			formatName = reader.getFormatName();
 		}
-
-		if (type.equals("jpeg")) {
+		String type = TYPE_JPEG;
+		renderedImage = (RenderedImage) image;
+		if (formatName.contains("bmp")) {
+			type = TYPE_BMP;
+		} else if (formatName.contains("gif")) {
+			type = TYPE_GIF;
+		} else if (formatName.contains("jpeg")) {
 			type = TYPE_JPEG;
+		} else if (formatName.contains("png")) {
+			type = TYPE_PNG;
+		} else if (formatName.contains("tif")) {
+			type = TYPE_TIFF;
 		}
 
 		return new ImageBag(renderedImage, type);
@@ -433,7 +436,25 @@ public class ImageToolImpl implements ImageTool {
 
 	@Override
 	public ImageBag read(File file) throws IOException {
-		return read(_fileUtil.getBytes(file));
+		RenderedImage renderedImage = null;
+				
+		BufferedImage image = ImageIO.read(file);
+		renderedImage = (RenderedImage) image;
+		String type = TYPE_JPEG;
+		String fileName = file.getCanonicalPath();
+		if (fileName.endsWith(".bmp")) {
+			type = TYPE_BMP;
+		} else if (fileName.endsWith(".gif")) {
+			type = TYPE_GIF;
+		} else if (fileName.endsWith(".jpg")) {
+			type = TYPE_JPEG;
+		} else if (fileName.endsWith(".png")) {
+			type = TYPE_PNG;
+		} else if (fileName.endsWith(".tif")) {
+			type = TYPE_TIFF;
+		}
+
+		return new ImageBag(renderedImage, type);
 	}
 
 	@Override
@@ -566,10 +587,7 @@ public class ImageToolImpl implements ImageTool {
 		throws IOException {
 
 		if (contentType.contains(TYPE_BMP)) {
-			ImageEncoder imageEncoder = ImageCodec.createImageEncoder(
-				TYPE_BMP, os, null);
-
-			imageEncoder.encode(renderedImage);
+			ImageIO.write(renderedImage, "bmp", os);
 		}
 		else if (contentType.contains(TYPE_GIF)) {
 			encodeGIF(renderedImage, os);
@@ -585,10 +603,7 @@ public class ImageToolImpl implements ImageTool {
 		else if (contentType.contains(TYPE_TIFF) ||
 				 contentType.contains("tif")) {
 
-			ImageEncoder imageEncoder = ImageCodec.createImageEncoder(
-				TYPE_TIFF, os, null);
-
-			imageEncoder.encode(renderedImage);
+			ImageIO.write(renderedImage, "tiff", os);
 		}
 	}
 
