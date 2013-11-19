@@ -720,8 +720,7 @@ AUI.add(
 								{
 									dialog: {
 										align: instance._dialogAlignConfig,
-										cssClass: 'portlet-asset-categories-admin-dialog permissions-change',
-										width: 600
+										cssClass: 'portlet-asset-categories-admin-dialog permissions-change'
 									},
 									title: Liferay.Language.get('edit-permissions'),
 									uri: 'about:blank'
@@ -1114,6 +1113,13 @@ AUI.add(
 								};
 
 								return {
+									after: {
+										childrenChange: function(event) {
+											var target = event.target;
+
+											target.set('alwaysShowHitArea', (event.newVal.length > 0));
+										}
+									},
 									alwaysShowHitArea: item.hasChildren,
 									id: STR_CATEGORY_NODE + item.categoryId,
 									io: {
@@ -2887,7 +2893,7 @@ AUI.add(
 							}
 						}
 						else {
-							dropNode.append(dragNode);
+							dropNode.appendChild(dragNode);
 						}
 					},
 

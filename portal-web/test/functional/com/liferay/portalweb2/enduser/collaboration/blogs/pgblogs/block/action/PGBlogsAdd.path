@@ -20,12 +20,12 @@
 </tr>
 <tr>
 	<td>ERROR_MESSAGE_1</td>
-	<td>xPath=(//div[@class='alert alert-error'])[1]</td>
+	<td>xPath=(//div[contains(@class,'alert') and contains(@class,'alert-error')])[1]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ERROR_MESSAGE_2</td>
-	<td>xPath=(//div[@class='alert alert-error'])[2]</td>
+	<td>xPath=(//div[contains(@class,'alert') and contains(@class,'alert-error')])[2]</td>
 	<td></td>
 </tr>
 <tr>
@@ -56,6 +56,21 @@
 <tr>
 	<td>CATEGORIZATION_DROPDOWN</td>
 	<td>//div[@id='blogsEntryCategorizationPanel']/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ALLOW_PINGBACKS_CHECKBOX</td>
+	<td>//input[@id='_33_allowPingbacksCheckbox']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ALLOWS_TRACKBACKS_CHECKBOX</td>
+	<td>//input[@id='_33_allowTrackbacksCheckbox']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TRACKBACKS_TO_SEND_FIELD</td>
+	<td>//input[@id='_33_trackbacks']</td>
 	<td></td>
 </tr>
 <tr>

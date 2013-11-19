@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.documentlibrary.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
@@ -31,6 +33,7 @@ import java.util.Map;
  * @see DLFileVersion
  * @generated
  */
+@ProviderType
 public class DLFileVersionWrapper implements DLFileVersion,
 	ModelWrapper<DLFileVersion> {
 	public DLFileVersionWrapper(DLFileVersion dlFileVersion) {
@@ -1015,6 +1018,12 @@ public class DLFileVersionWrapper implements DLFileVersion,
 	public void persist()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_dlFileVersion.persist();
+	}
+
+	@Override
+	public void updateTreePath(java.lang.String treePath)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_dlFileVersion.updateTreePath(treePath);
 	}
 
 	@Override

@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.journal.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
@@ -31,6 +33,7 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
  * @see com.liferay.portlet.journal.service.impl.JournalFolderLocalServiceImpl
  * @generated
  */
+@ProviderType
 public class JournalFolderLocalServiceUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -525,8 +528,7 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	public static void rebuildTree(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.SystemException {
 		getService().rebuildTree(companyId);
 	}
 

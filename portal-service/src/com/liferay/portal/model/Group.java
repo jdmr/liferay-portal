@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * The extended model interface for the Group service. Represents a row in the &quot;Group_&quot; database table, with each column mapped to a property of this class.
  *
@@ -23,16 +25,13 @@ package com.liferay.portal.model;
  * @see com.liferay.portal.model.impl.GroupModelImpl
  * @generated
  */
-public interface Group extends GroupModel, PersistedModel {
+@ProviderType
+public interface Group extends GroupModel, PersistedModel, TreeModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to {@link com.liferay.portal.model.impl.GroupImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public java.lang.String buildTreePath()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
-
 	public void clearStagingGroup();
 
 	public java.util.List<com.liferay.portal.model.Group> getAncestors()

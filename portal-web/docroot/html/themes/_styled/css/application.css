@@ -262,6 +262,10 @@
 .app-view-drop-active {
 	background-color: #00A2EA;
 	font-weight: bold;
+
+	.category-portlets & {
+		color: #FFF;
+	}
 }
 
 .basecelleditor [class~="form-validator-message"] {
@@ -283,10 +287,6 @@
 }
 
 /* ---------- Menus ---------- */
-
-.lfr-menu-list {
-	z-index: 450;
-}
 
 .lfr-page-templates li {
 	a {

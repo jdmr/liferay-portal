@@ -58,9 +58,9 @@
 					'liferay-app-view-paginator': {
 						path: 'app_view_paginator.js',
 						requires: [
-							'aui-pagination',
 							'aui-parse-content',
 							'liferay-history-manager',
+							'liferay-pagination',
 							'liferay-portlet-base'
 						]
 					},
@@ -86,7 +86,6 @@
 							'array-extras',
 							'async-queue',
 							'aui-autocomplete-deprecated',
-							'aui-form-textfield-deprecated',
 							'aui-io-plugin-deprecated',
 							'aui-io-request',
 							'aui-live-search-deprecated',
@@ -232,6 +231,13 @@
 							'liferay-portlet-base',
 							'liferay-util-window',
 							'liferay-widget-size-animation-plugin'
+						]
+					},
+					'liferay-dockbar-keyboard-interaction': {
+						path: 'dockbar_keyboard_interaction.js',
+						requires: [
+							'node-focusmanager',
+							'plugin'
 						]
 					},
 					'liferay-dockbar-underlay': {
@@ -475,6 +481,12 @@
 							'dom-base'
 						]
 					},
+					'liferay-pagination': {
+						path: 'pagination.js',
+						requires: [
+							'aui-pagination'
+						]
+					},
 					'liferay-poller': {
 						path: 'poller.js',
 						requires: [
@@ -590,6 +602,12 @@
 						path: 'store.js',
 						requires: [
 							'aui-io-request'
+						]
+					},
+					'liferay-toggler-interaction': {
+						path: 'toggler_interaction.js',
+						requires: [
+							'liferay-toggler-key-filter'
 						]
 					},
 					'liferay-toggler-key-filter': {

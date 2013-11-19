@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.bookmarks.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
@@ -23,6 +25,7 @@ import com.liferay.portal.service.ServiceWrapper;
  * @see BookmarksEntryLocalService
  * @generated
  */
+@ProviderType
 public class BookmarksEntryLocalServiceWrapper
 	implements BookmarksEntryLocalService,
 		ServiceWrapper<BookmarksEntryLocalService> {
@@ -528,8 +531,7 @@ public class BookmarksEntryLocalServiceWrapper
 
 	@Override
 	public void rebuildTree(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.SystemException {
 		_bookmarksEntryLocalService.rebuildTree(companyId);
 	}
 

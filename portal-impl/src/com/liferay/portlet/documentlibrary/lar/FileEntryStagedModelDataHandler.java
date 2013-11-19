@@ -85,12 +85,10 @@ public class FileEntryStagedModelDataHandler
 			String uuid, long groupId, String className, String extraData)
 		throws PortalException, SystemException {
 
-		DLFileEntry dlFileEntry =
-			DLFileEntryLocalServiceUtil.fetchDLFileEntryByUuidAndGroupId(
-				uuid, groupId);
+		FileEntry fileEntry = FileEntryUtil.fetchByUUID_R(uuid, groupId);
 
-		if (dlFileEntry != null) {
-			DLFileEntryLocalServiceUtil.deleteFileEntry(dlFileEntry);
+		if (fileEntry != null) {
+			DLAppLocalServiceUtil.deleteFileEntry(fileEntry.getFileEntryId());
 		}
 	}
 
@@ -229,36 +227,18 @@ public class FileEntryStagedModelDataHandler
 
 		long userId = portletDataContext.getUserId(fileEntry.getUserUuid());
 
-		String path = ExportImportPathUtil.getModelPath(
-			portletDataContext, FileEntry.class.getName(),
-			fileEntry.getFileEntryId());
-
-		Element fileEntryElement =
-			portletDataContext.getImportDataElement(
-				FileEntry.class.getSimpleName(), "path", path);
-
-		Element referenceDataElement =
-			portletDataContext.getReferenceDataElement(
-				fileEntryElement, Repository.class,
+		if (!fileEntry.isDefaultRepository()) {
+			StagedModelDataHandlerUtil.importReferenceStagedModel(
+				portletDataContext, fileEntry, Repository.class,
 				fileEntry.getRepositoryId());
-
-		if (referenceDataElement != null) {
-			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, referenceDataElement);
 		}
 
 		if (fileEntry.getFolderId() !=
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 
-			String folderPath = ExportImportPathUtil.getModelPath(
-				portletDataContext, Folder.class.getName(),
+			StagedModelDataHandlerUtil.importReferenceStagedModel(
+				portletDataContext, fileEntry, Folder.class,
 				fileEntry.getFolderId());
-
-			Folder folder = (Folder)portletDataContext.getZipEntryAsObject(
-				folderPath);
-
-			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, folder);
 		}
 
 		Map<Long, Long> folderIds =
@@ -279,6 +259,9 @@ public class FileEntryStagedModelDataHandler
 		serviceContext.setAttribute(
 			"sourceFileName", "A." + fileEntry.getExtension());
 		serviceContext.setUserId(userId);
+
+		Element fileEntryElement = portletDataContext.getImportDataElement(
+			fileEntry);
 
 		String binPath = fileEntryElement.attributeValue("bin-path");
 
@@ -637,6 +620,17 @@ public class FileEntryStagedModelDataHandler
 	protected void validateExport(
 			PortletDataContext portletDataContext, FileEntry fileEntry)
 		throws PortletDataException {
+
+		if ((fileEntry.getGroupId() != portletDataContext.getGroupId()) &&
+			(fileEntry.getGroupId() != portletDataContext.getScopeGroupId())) {
+
+			PortletDataException pde = new PortletDataException(
+				PortletDataException.INVALID_GROUP);
+
+			pde.setStagedModel(fileEntry);
+
+			throw pde;
+		}
 
 		try {
 			FileVersion fileVersion = fileEntry.getFileVersion();

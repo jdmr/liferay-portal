@@ -14,6 +14,8 @@
 
 package com.liferay.portal.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Provides a wrapper for {@link PortletPreferencesLocalService}.
  *
@@ -21,6 +23,7 @@ package com.liferay.portal.service;
  * @see PortletPreferencesLocalService
  * @generated
  */
+@ProviderType
 public class PortletPreferencesLocalServiceWrapper
 	implements PortletPreferencesLocalService,
 		ServiceWrapper<PortletPreferencesLocalService> {
@@ -310,6 +313,21 @@ public class PortletPreferencesLocalServiceWrapper
 	public void deletePortletPreferencesByPlid(long plid)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_portletPreferencesLocalService.deletePortletPreferencesByPlid(plid);
+	}
+
+	@Override
+	public javax.portlet.PortletPreferences fetchPreferences(long companyId,
+		long ownerId, int ownerType, long plid, java.lang.String portletId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _portletPreferencesLocalService.fetchPreferences(companyId,
+			ownerId, ownerType, plid, portletId);
+	}
+
+	@Override
+	public javax.portlet.PortletPreferences fetchPreferences(
+		com.liferay.portal.model.PortletPreferencesIds portletPreferencesIds)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _portletPreferencesLocalService.fetchPreferences(portletPreferencesIds);
 	}
 
 	@Override

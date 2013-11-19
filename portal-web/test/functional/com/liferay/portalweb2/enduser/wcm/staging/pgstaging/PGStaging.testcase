@@ -32,8 +32,8 @@
 
 	<command name="ActivateStaging" priority="5">
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -46,16 +46,17 @@
 		<var name="dmDocumentFile" value="Document_1.docx" />
 		<var name="dmDocumentTitle" value="${dmDocumentFile}" />
 		<var name="pageName" value="Documents and Media Test Page" />
-		<var name="pageType" value="Site" />
 
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="${pageType}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="${pageType}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Portlet#addPG">
@@ -64,8 +65,8 @@
 		</execute>
 
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -76,7 +77,8 @@
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="${pageType}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="DMDocument#addPG">
@@ -87,8 +89,8 @@
 		</execute>
 
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -97,8 +99,8 @@
 		</execute>
 
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -109,7 +111,8 @@
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="${pageType}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="DMDocument#viewPGviaStagingLocalLive">
@@ -123,17 +126,18 @@
 		<var name="dmDocumentFile" value="Document_1.docx" />
 		<var name="dmDocumentTitle" value="${dmDocumentFile}" />
 		<var name="pageName" value="Documents and Media Test Page" />
-		<var name="pageType" value="Site" />
 		<var name="siteName" value="${siteName}" />
 
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="${pageType}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="${pageType}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Portlet#addPG">
@@ -142,8 +146,8 @@
 		</execute>
 
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -154,7 +158,8 @@
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="${pageType}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="DMDocument#addPG">
@@ -167,7 +172,8 @@
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="${pageType}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="DMDocument#viewPGviaStagingLocalLive">
@@ -182,8 +188,8 @@
 		<var name="pageVariationName" value="Page Variation Name" />
 
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -195,34 +201,31 @@
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
-		<execute action="PGStaging#assertClick" locator-key1="STAGING_BUTTON" value1="Staging" />
-		<execute action="PGStaging#assertClick" locator-key1="STAGING_DROP_DOWN_BUTTON" value1="Staging" />
-
-		<execute action="PGStaging#click" locator-key1="STAGING_MENU_MANAGE_PAGE_VARIATION" />
-
-		<execute action="PGStagingManagepagevariations#selectFrame" locator-key1="MANAGE_PAGE_VARIATIONS_IFRAME" />
-		<execute action="PGStagingManagepagevariations#assertClick" locator-key1="ADD_PAGE_VARIATION_BUTTON" value1="Add Page Variation" />
-		<execute action="PGStagingManagepagevariations#type" locator-key1="ADD_PAGE_VARIATION_NAME_FIELD" value1="${pageVariationName}" />
-		<execute action="PGStagingManagepagevariations#assertClick" locator-key1="ADD_PAGE_VARIATION_ADD_BUTTON" value1="Add" />
-		<execute action="PGStagingManagepagevariations#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Page variation was added." />
+		<execute macro="Staging#addPageVariationPG">
+			<var name="pageVariationName" value="${pageVariationName}" />
+		</execute>
 
 		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
-		<var name="key_pageVariationName" value="${pageVariationName}" />
-
-		<execute action="PGStaging#assertTextEquals" locator-key1="PAGE_VARIATION" value1="${pageVariationName}" />
+		<execute macro="Staging#viewPageVariationPG">
+			<var name="pageVariationName" value="${pageVariationName}" />
+		</execute>
 	</command>
 
 	<command name="AddSitePagesVariation" priority="5">
@@ -230,8 +233,8 @@
 		<var name="sitePagesVariationName" value="Site Pages Variation Name" />
 
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -243,13 +246,15 @@
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Staging#addSitePagesVariationPG">
@@ -259,7 +264,8 @@
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Staging#viewSitePagesVariationPG">
@@ -272,7 +278,8 @@
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Portlet#addPG">
@@ -289,8 +296,8 @@
 		</execute>
 
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -301,7 +308,8 @@
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="WebContent#viewNoEditWCViaWCD">
@@ -309,8 +317,8 @@
 		</execute>
 
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -320,7 +328,8 @@
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="WebContent#viewEditWCViaWCD">
@@ -330,8 +339,8 @@
 
 	<command name="DeactivateStaging" priority="5">
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -340,8 +349,8 @@
 		</execute>
 
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -356,7 +365,8 @@
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Portlet#addPG">
@@ -393,8 +403,8 @@
 		<var name="pageName" value="Staging Portlet Test Page" />
 
 		<execute macro="Page#gotoConfigurationCP">
-			<var name="pageType" value="Site" />
-			<var name="pageTypeURL" value="${siteName}" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
@@ -405,13 +415,15 @@
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Portlet#addPG">
@@ -420,14 +432,16 @@
 
 		<execute macro="Page#gotoPG">
 			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Staging#publishToLiveNowPG" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
+			<var name="siteName" value="${siteName}" />
+			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute action="Home#assertElementPresent" locator-key1="PORTLET_1" />

@@ -25,7 +25,7 @@
 </tr>
 <tr>
 	<td>SUCCESS_MESSAGE</td>
-	<td>//div[@class='alert alert-success']</td>
+	<td>//div[contains(@class,'alert') and contains(@class,'alert-success')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -168,10 +168,26 @@
 	<td></td>
 	<td></td>
 </tr>
+<!--SITE_ADMIN_PAGES_SITE_PAGES_GENERAL-->
+<tr>
+	<td>SITE_ADMIN_PAGES_SITE_PAGES_GENERAL_ACCESS_IN_SITE_ADMINISTRATION</td>
+	<td>//input[@value='156ACCESS_IN_CONTROL_PANEL']</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
 <!--SITE_ADMIN_PAGES_SITE_PAGES_SITE-->
 <tr>
 	<td>SITE_ADMIN_PAGES_SITE_PAGES_SITE_ADD_SITE</td>
 	<td>//input[@value='com.liferay.portal.model.GroupADD_COMMUNITY']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SITE_ADMIN_PAGES_SITE_PAGES_SITE_MANAGE_PAGES</td>
+	<td>//input[@value='com.liferay.portal.model.GroupMANAGE_LAYOUTS']</td>
 	<td></td>
 </tr>
 <tr>
@@ -210,6 +226,37 @@
 	<td></td>
 	<td></td>
 </tr>
+<!--SITE_ADMIN_CONTENT_WEB_CONTENT_WEB_CONTENT-->
+<tr>
+	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_WEB_CONTENT_ALL_CHECKBOX</td>
+	<td>xpath=(//input[@name='_128_allRowIds'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_WEB_CONTENT_ADD_FOLDER</td>
+	<td>//input[@value='com.liferay.portlet.journalADD_FOLDER']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_WEB_CONTENT_ADD_STRUCTURE</td>
+	<td>//input[@value='com.liferay.portlet.journalADD_STRUCTURE']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_WEB_CONTENT_ADD_TEMPLATE</td>
+	<td>//input[@value='com.liferay.portlet.journalADD_TEMPLATE']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_WEB_CONTENT_ADD_WEB_CONTENT</td>
+	<td>//input[@value='com.liferay.portlet.journalADD_ARTICLE']</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
 <!--SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_GENERAL-->
 <tr>
 	<td>SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_GENERAL_ALL_CHECKBOX</td>
@@ -230,6 +277,11 @@
 <tr>
 	<td>SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_DOCUMENTS_ADD_DOCUMENT</td>
 	<td>//input[@value='com.liferay.portlet.documentlibraryADD_DOCUMENT']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_DOCUMENTS_ADD_REPOSITORY</td>
+	<td>//input[@value='com.liferay.portlet.documentlibraryADD_REPOSITORY']</td>
 	<td></td>
 </tr>
 <tr>

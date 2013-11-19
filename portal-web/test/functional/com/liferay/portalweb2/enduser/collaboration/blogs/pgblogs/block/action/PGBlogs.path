@@ -24,8 +24,13 @@
 	<td></td>
 </tr>
 <tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
 	<td>PORTLET_TITLE</td>
-	<td>//h1[@class='portlet-title']/span[@class='portlet-title-text']</td>
+	<td>//h1[@class='portlet-title']/span[contains(@class,'portlet-title-text')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -122,7 +127,7 @@
 <!--ENTRY-->
 <tr>
 	<td>ENTRY_DRAFT_STATUS</td>
-	<td>//div[@class='entry draft']/div/h3</td>
+	<td>//div[contains(@class,'entry') and contains(@class,'draft')]/div/h3</td>
 	<td></td>
 </tr>
 <tr>
@@ -152,12 +157,12 @@
 </tr>
 <tr>
 	<td>ENTRY_CONTENT</td>
-	<td>//div[@class='entry approved' and contains(.,'${key_entryTitle}')]//div[@class='entry-body']/div</td>
+	<td>//div[contains(@class,'entry') and contains(@class,'approved') and contains(.,'${key_entryTitle}')]//div[@class='entry-body']/div</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ENTRY_CONTENT_DRAFT</td>
-	<td>//div[@class='entry draft' and contains(.,'${key_entryTitle}')]//div[@class='entry-body']/div</td>
+	<td>//div[contains(@class,'entry') and contains(@class,'draft') and contains(.,'${key_entryTitle}')]//div[@class='entry-body']/div</td>
 	<td></td>
 </tr>
 <tr>
@@ -176,8 +181,23 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ENTRY_COMMENT_1</td>
+	<td>xpath=(//div[@class='stats']/span[@class='comments'])[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_2</td>
+	<td>xpath=(//div[@class='stats']/span[@class='comments'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_3</td>
+	<td>xpath=(//div[@class='stats']/span[@class='comments'])[3]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ENTRY_EDIT</td>
-	<td>//div[@class='entry approved' and contains(.,'${key_entryTitle}')]//div[contains(@class,'edit-actions')]//span/a/span[.='Edit']</td>
+	<td>//div[contains(@class,'entry') and contains(@class,'approved') and contains(.,'${key_entryTitle}')]//div[contains(@class,'edit-actions')]//span/a/span[.='Edit']</td>
 	<td></td>
 </tr>
 <tr>
@@ -197,7 +217,7 @@
 </tr>
 <tr>
 	<td>ENTRY_PERMISSIONS</td>
-	<td>//div[@class='entry approved' and contains(.,'${key_entryTitle}')]//span/a/span[.='Permissions']</td>
+	<td>//div[contains(@class,'entry') and contains(@class,'approved') and contains(.,'${key_entryTitle}')]//span/a/span[.='Permissions']</td>
 	<td></td>
 </tr>
 <tr>
@@ -217,7 +237,7 @@
 </tr>
 <tr>
 	<td>ENTRY_RECYCLE_BIN</td>
-	<td>//div[@class='entry approved' and contains(.,'${key_entryTitle}')]//div[contains(@class,'edit-actions')]//span/a/span[.='Move to the Recycle Bin']</td>
+	<td>//div[contains(@class,'entry') and contains(@class,'approved') and contains(.,'${key_entryTitle}')]//div[contains(@class,'edit-actions')]//span/a/span[.='Move to the Recycle Bin']</td>
 	<td></td>
 </tr>
 <tr>

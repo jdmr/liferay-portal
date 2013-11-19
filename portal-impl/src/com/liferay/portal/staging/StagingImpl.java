@@ -81,6 +81,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutBranch;
+import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.model.LayoutRevision;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.LayoutSetBranch;
@@ -806,13 +807,31 @@ public class StagingImpl implements Staging {
 
 			StagedModel stagedModel = pde.getStagedModel();
 
-			StagedModelType stagedModelType = stagedModel.getStagedModelType();
+			String referrerClassName = StringPool.BLANK;
+			String referrerDisplayName = StringPool.BLANK;
 
-			String referrerClassName = stagedModelType.getClassName();
-			String referrerDisplayName =
-				StagedModelDataHandlerUtil.getDisplayName(stagedModel);
+			if (stagedModel != null) {
+				StagedModelType stagedModelType =
+					stagedModel.getStagedModelType();
 
-			if (pde.getType() == PortletDataException.MISSING_DEPENDENCY) {
+				referrerClassName = stagedModelType.getClassName();
+				referrerDisplayName = StagedModelDataHandlerUtil.getDisplayName(
+					stagedModel);
+			}
+
+			if (pde.getType() == PortletDataException.INVALID_GROUP) {
+				errorMessage = LanguageUtil.format(
+					locale,
+					"the-x-x-could-not-be-exported-because-it-is-not-in-the-" +
+						"currently-exported-group",
+					new String[] {
+						ResourceActionsUtil.getModelResource(
+							locale, referrerClassName),
+						referrerDisplayName
+					}
+				);
+			}
+			else if (pde.getType() == PortletDataException.MISSING_DEPENDENCY) {
 				errorMessage = LanguageUtil.format(
 					locale,
 					"the-x-x-has-missing-references-that-could-not-be-found-" +
@@ -827,8 +846,8 @@ public class StagingImpl implements Staging {
 			else if (pde.getType() == PortletDataException.STATUS_IN_TRASH) {
 				errorMessage = LanguageUtil.format(
 					locale,
-					"the-x-x-has-references-that-could-not-be-exported-" +
-						"because-they-are-in-the-recycle-bin",
+					"the-x-x-could-not-be-exported-because-it-is-in-the-" +
+						"recycle-bin",
 					new String[] {
 						ResourceActionsUtil.getModelResource(
 							locale, referrerClassName),
@@ -839,14 +858,17 @@ public class StagingImpl implements Staging {
 			else if (pde.getType() == PortletDataException.STATUS_UNAVAILABLE) {
 				errorMessage = LanguageUtil.format(
 					locale,
-					"the-x-x-has-references-that-could-not-be-exported-" +
-						"because-their-workflow-status-is-not-exportable",
+					"the-x-x-could-not-be-exported-because-its-workflow-" +
+						"status-is-not-exportable",
 					new String[] {
 						ResourceActionsUtil.getModelResource(
 							locale, referrerClassName),
 						referrerDisplayName
 					}
 				);
+			}
+			else {
+				errorMessage = e.getLocalizedMessage();
 			}
 
 			errorType = ServletResponseConstants.SC_FILE_CUSTOM_EXCEPTION;
@@ -1484,15 +1506,25 @@ public class StagingImpl implements Staging {
 			stagingGroup = sourceLayout.getGroup();
 			liveGroup = stagingGroup.getLiveGroup();
 
-			targetLayout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(
+			targetLayout = LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
 				sourceLayout.getUuid(), liveGroup.getGroupId(),
 				sourceLayout.isPrivateLayout());
 		}
 
+		long sourcePlid = sourceLayout.getPlid();
+
+		long targetPlid = LayoutConstants.DEFAULT_PLID;
+
+		if (targetLayout != null) {
+			targetPlid = targetLayout.getPlid();
+		}
+		else if ((targetLayout == null) && sourceLayout.isTypeControlPanel()) {
+			targetPlid = sourcePlid;
+		}
+
 		copyPortlet(
 			portletRequest, stagingGroup.getGroupId(), liveGroup.getGroupId(),
-			sourceLayout.getPlid(), targetLayout.getPlid(),
-			portlet.getPortletId());
+			sourcePlid, targetPlid, portlet.getPortletId());
 	}
 
 	@Override

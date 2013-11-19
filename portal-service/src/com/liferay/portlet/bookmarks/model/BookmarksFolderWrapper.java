@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.bookmarks.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
@@ -31,6 +33,7 @@ import java.util.Map;
  * @see BookmarksFolder
  * @generated
  */
+@ProviderType
 public class BookmarksFolderWrapper implements BookmarksFolder,
 	ModelWrapper<BookmarksFolder> {
 	public BookmarksFolderWrapper(BookmarksFolder bookmarksFolder) {
@@ -883,6 +886,12 @@ public class BookmarksFolderWrapper implements BookmarksFolder,
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _bookmarksFolder.buildTreePath();
+	}
+
+	@Override
+	public void updateTreePath(java.lang.String treePath)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_bookmarksFolder.updateTreePath(treePath);
 	}
 
 	@Override

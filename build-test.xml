@@ -52,9 +52,15 @@
 					<format property="tstamp.value" pattern="yyyyMMddkkmmssSSS" />
 				</tstamp>
 
-				<get dest="${tstamp.value}.zip" src="${sql.legacy.url}" />
+				<get
+					dest="${tstamp.value}.zip"
+					src="${sql.legacy.url}"
+				/>
 
-				<unzip src="${tstamp.value}.zip" dest="sql" />
+				<unzip
+					dest="sql"
+					src="${tstamp.value}.zip"
+				/>
 
 				<delete file="${tstamp.value}.zip" />
 			</then>
@@ -840,7 +846,6 @@
 			</not>
 			<then>
 				<delete dir="${liferay.home}/data" />
-				<delete dir="${liferay.home}/deploy" />
 				<delete dir="${liferay.home}/logs" />
 			</then>
 		</if>
@@ -851,99 +856,29 @@
 	</target>
 
 	<target name="clean-up-java-processes">
-		<loadfile property="java.processes.old.content" srcfile="java-processes" />
-
-		<delete file="java-processes" />
-
-		<script classpathref="project.classpath" language="beanshell">
-			String javaProcessesOldContent = project.getProperty("java.processes.old.content");
-
-			if (javaProcessesOldContent.contains("File Not Found")) {
-				javaProcessesOldContent = "";
-			}
-
-			String javaProcessesOldList = javaProcessesOldContent.replaceAll("\r\n", ",");
-
-			if (javaProcessesOldList.endsWith(",")) {
-				javaProcessesOldList = javaProcessesOldList.substring(0, javaProcessesOldList.length() - 1);
-			}
-
-			project.setProperty("java.processes.old.list", javaProcessesOldList);
-		</script>
-
 		<if>
-			<os family="windows" />
+			<os family="unix" />
 			<then>
-				<exec executable="${shell.executable}" output="java-processes">
-					<arg line="/c jps -l" />
-				</exec>
+				<echo file="cleanjava.sh">
+					<![CDATA[
+						#!/bin/bash
+
+						for i in `ps -o pid,args -e | grep /opt/java/jdk | grep -v ant | grep -v grep | grep -v jenkins | cut -c1-5`
+						do
+							echo "Killing $i"
+
+							kill -9 $i
+						done
+					]]>
+				</echo>
+
+				<chmod file="cleanjava.sh" perm="a+x" />
+
+				<exec executable="${basedir}/cleanjava.sh" />
+
+				<delete file="cleanjava.sh" />
 			</then>
-			<else>
-				<exec executable="${shell.executable}" output="java-processes">
-					<arg line="-c jps -l" />
-				</exec>
-			</else>
 		</if>
-
-		<loadfile property="java.processes.new.content" srcfile="java-processes" />
-
-		<delete file="java-processes" />
-
-		<script classpathref="project.classpath" language="beanshell">
-			String javaProcessesNewContent = project.getProperty("java.processes.new.content");
-
-			if (javaProcessesNewContent.contains("File Not Found")) {
-				javaProcessesNewContent = "";
-			}
-
-			String javaProcessesNewList = javaProcessesNewContent.replaceAll("\r\n", ",");
-
-			if (javaProcessesNewList.endsWith(",")) {
-				javaProcessesNewList = javaProcessesNewList.substring(0, javaProcessesNewList.length() - 1);
-			}
-
-			project.setProperty("java.processes.new.list", javaProcessesNewList);
-		</script>
-
-		<for list="${java.processes.new.list}" param="java.processes.new.current">
-			<sequential>
-				<if>
-					<or>
-						<contains string="@{java.processes.new.current}" substring="admin-cli.jar" />
-						<contains string="@{java.processes.new.current}" substring="ASMain" />
-						<contains string="@{java.processes.new.current}" substring="Bootstrap" />
-						<contains string="@{java.processes.new.current}" substring="ClientAdmin" />
-						<contains string="@{java.processes.new.current}" substring="gshell-bootstrap.jar" />
-						<contains string="@{java.processes.new.current}" substring="jboss-modules.jar" />
-						<contains string="@{java.processes.new.current}" substring="selenium-server.jar" />
-						<contains string="@{java.processes.new.current}" substring="server.jar" />
-						<contains string="@{java.processes.new.current}" substring="start.jar" />
-					</or>
-					<then>
-						<antcall target="kill-java-process">
-							<param name="java.process.to.kill" value="@{java.processes.new.current}" />
-						</antcall>
-					</then>
-					<elseif>
-						<contains string="@{java.processes.new.current}" substring="Launcher" />
-						<then>
-							<for list="${java.processes.old.list}" param="java.processes.old.current">
-								<sequential>
-									<if>
-										<contains string="@{java.processes.new.current}" substring="@{java.processes.old.current}" />
-										<then>
-											<antcall target="kill-java-process">
-												<param name="java.process.to.kill" value="@{java.processes.new.current}" />
-											</antcall>
-										</then>
-									</if>
-								</sequential>
-							</for>
-						</then>
-					</elseif>
-				</if>
-			</sequential>
-		</for>
 	</target>
 
 	<target name="clean-up-logs">
@@ -1029,7 +964,7 @@
 				<then>
 					<copy todir="${todir}">
 						<fileset
-							dir="${jdbc.drivers.optional.dir}/mysql/5.0.7"
+							dir="lib/development"
 							includes="${jdbc.mysql.driver}"
 						/>
 					</copy>
@@ -1298,24 +1233,6 @@
 		<antcall target="execute-remote-command">
 			<param name="vm.host" value="${vm.host}" />
 		</antcall>
-	</target>
-
-	<target name="kill-java-process">
-		<echo>Killing Java process "${java.process.to.kill}"</echo>
-
-		<script classpathref="project.classpath" language="beanshell">
-			String javaProcessToKill = project.getProperty("java.process.to.kill");
-
-			int x = javaProcessToKill.indexOf(" ");
-
-			String javaProcessPid = javaProcessToKill.substring(0, x).trim();
-
-			project.setProperty("java.process.pid", javaProcessPid);
-		</script>
-
-		<exec executable="taskkill.exe">
-			<arg line="/f /fi &quot;pid eq ${java.process.pid}&quot;" />
-		</exec>
 	</target>
 
 	<target name="merge-test-results">
@@ -2002,11 +1919,268 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 	<target name="prepare-test-build">
 		<antcall target="record-git-commit-portal" inheritAll="false" />
 
-		<ant antfile="build-dist.xml" target="unzip-tomcat" inheritAll="false" />
-
 		<antcall target="start" inheritAll="false" />
 
-		<antcall target="deploy" inheritAll="false" />
+		<if>
+			<matches pattern="http" string="${test.build.bundle.glassfish.zip.url}" />
+			<then>
+				<mkdir dir="${app.server.parent.dir}" />
+
+				<tstamp>
+					<format property="tstamp.value" pattern="yyyyMMddkkmmssSSS" />
+				</tstamp>
+
+				<get
+					dest="${tstamp.value}.zip"
+					src="${test.build.bundle.glassfish.zip.url}"
+				/>
+
+				<unzip
+					dest="${app.server.parent.dir}"
+					src="${tstamp.value}.zip"
+				>
+					<patternset
+						includes="liferay-portal-*/glassfish-*/**"
+					/>
+					<mapper
+						from="[^/]+/(.*)"
+						to="\1"
+						type="regexp"
+					/>
+				</unzip>
+
+				<chmod perm="a+x">
+					<fileset dir="${app.server.glassfish.bin.dir}">
+						<include name="*.sh" />
+					</fileset>
+				</chmod>
+
+				<delete file="${tstamp.value}.zip" />
+			</then>
+		</if>
+
+		<if>
+			<matches pattern="http" string="${test.build.bundle.jboss.zip.url}" />
+			<then>
+				<mkdir dir="${app.server.parent.dir}" />
+
+				<tstamp>
+					<format property="tstamp.value" pattern="yyyyMMddkkmmssSSS" />
+				</tstamp>
+
+				<get
+					dest="${tstamp.value}.zip"
+					src="${test.build.bundle.jboss.zip.url}"
+				/>
+
+				<unzip
+					dest="${app.server.parent.dir}"
+					src="${tstamp.value}.zip"
+				>
+					<patternset
+						includes="liferay-portal-*/jboss-*/**"
+					/>
+					<mapper
+						from="[^/]+/(.*)"
+						to="\1"
+						type="regexp"
+					/>
+				</unzip>
+
+				<chmod perm="a+x">
+					<fileset dir="${app.server.jboss.bin.dir}">
+						<include name="*.sh" />
+					</fileset>
+				</chmod>
+
+				<delete file="${tstamp.value}.zip" />
+			</then>
+		</if>
+
+		<if>
+			<matches pattern="http" string="${test.build.bundle.jetty.zip.url}" />
+			<then>
+				<mkdir dir="${app.server.parent.dir}" />
+
+				<tstamp>
+					<format property="tstamp.value" pattern="yyyyMMddkkmmssSSS" />
+				</tstamp>
+
+				<get
+					dest="${tstamp.value}.zip"
+					src="${test.build.bundle.jetty.zip.url}"
+				/>
+
+				<unzip
+					dest="${app.server.parent.dir}"
+					src="${tstamp.value}.zip"
+				>
+					<patternset
+						includes="liferay-portal-*/jetty-*/**"
+					/>
+					<mapper
+						from="[^/]+/(.*)"
+						to="\1"
+						type="regexp"
+					/>
+				</unzip>
+
+				<chmod perm="a+x">
+					<fileset dir="${app.server.jetty.bin.dir}">
+						<include name="*.sh" />
+					</fileset>
+				</chmod>
+
+				<delete file="${tstamp.value}.zip" />
+			</then>
+		</if>
+
+		<if>
+			<matches pattern="http" string="${test.build.bundle.resin.zip.url}" />
+			<then>
+				<mkdir dir="${app.server.parent.dir}" />
+
+				<tstamp>
+					<format property="tstamp.value" pattern="yyyyMMddkkmmssSSS" />
+				</tstamp>
+
+				<get
+					dest="${tstamp.value}.zip"
+					src="${test.build.bundle.resin.zip.url}"
+				/>
+
+				<unzip
+					dest="${app.server.parent.dir}"
+					src="${tstamp.value}.zip"
+				>
+					<patternset
+						includes="liferay-portal-*/resin-*/**"
+					/>
+					<mapper
+						from="[^/]+/(.*)"
+						to="\1"
+						type="regexp"
+					/>
+				</unzip>
+
+				<chmod perm="a+x">
+					<fileset dir="${app.server.resin.bin.dir}">
+						<include name="*.sh" />
+					</fileset>
+				</chmod>
+
+				<delete file="${tstamp.value}.zip" />
+			</then>
+		</if>
+
+		<if>
+			<matches pattern="http" string="${test.build.bundle.tomcat.zip.url}" />
+			<then>
+				<mkdir dir="${app.server.parent.dir}" />
+
+				<tstamp>
+					<format property="tstamp.value" pattern="yyyyMMddkkmmssSSS" />
+				</tstamp>
+
+				<get
+					dest="${tstamp.value}.zip"
+					src="${test.build.bundle.tomcat.zip.url}"
+				/>
+
+				<unzip
+					dest="${app.server.parent.dir}"
+					src="${tstamp.value}.zip"
+				>
+					<patternset
+						includes="liferay-portal-*/tomcat-*/**"
+					/>
+					<mapper
+						from="[^/]+/(.*)"
+						to="\1"
+						type="regexp"
+					/>
+				</unzip>
+
+				<chmod perm="a+x">
+					<fileset dir="${app.server.tomcat.bin.dir}">
+						<include name="*.sh" />
+					</fileset>
+				</chmod>
+
+				<delete file="${tstamp.value}.zip" />
+			</then>
+			<else>
+				<ant antfile="build-dist.xml" target="unzip-tomcat" inheritAll="false" />
+
+				<antcall target="deploy" inheritAll="false" />
+			</else>
+		</if>
+
+		<if>
+			<equals arg1="${test.build.bundle.weblogic}" arg2="true" />
+			<then>
+				<ant antfile="build-dist.xml" target="unzip-weblogic" inheritAll="false" />
+
+				<get
+					dest="liferay-portal.war"
+					src="${test.build.portal.war.url}"
+				/>
+
+				<unzip
+					dest="${app.server.weblogic.portal.dir}"
+					src="liferay-portal.war"
+				/>
+
+				<delete file="liferay-portal.war" />
+
+				<get
+					dest="liferay-portal-dependencies.zip"
+					src="${test.build.portal.dependencies.zip.url}"
+				/>
+
+				<unzip
+					dest="${app.server.weblogic.lib.global.dir}"
+					src="liferay-portal-dependencies.zip"
+				>
+					<mapper
+						from="[^/]+/(.*)"
+						to="\1"
+						type="regexp"
+					/>
+				</unzip>
+
+				<delete file="liferay-portal-dependencies.zip" />
+			</then>
+		</if>
+
+		<if>
+			<matches pattern="http" string="${test.build.license.xml.zip.url}" />
+			<then>
+				<mkdir dir="${liferay.home}/deploy" />
+
+				<get
+					dest="${liferay.home}/deploy/license.xml"
+					src="${test.build.license.xml.zip.url}"
+				/>
+			</then>
+		</if>
+
+		<if>
+			<matches pattern="http" string="${test.build.plugins.war.zip.url}" />
+			<then>
+				<get
+					dest="plugins.war.zip"
+					src="${test.build.plugins.war.zip.url}"
+				/>
+
+				<unzip
+					dest="."
+					src="plugins.war.zip"
+				/>
+
+				<delete file="plugins.war.zip" />
+			</then>
+		</if>
 
 		<ant dir="portal-impl" target="build-selenium-new" inheritAll="false" />
 
@@ -2315,7 +2489,7 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 							<socket server="${database.host}" port="5000" />
 						</waitfor>
 
-						<sleep seconds="10" />
+						<sleep seconds="5" />
 					</sequential>
 				</parallel>
 			</then>
@@ -2332,7 +2506,6 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 					</not>
 					<then>
 						<delete dir="${liferay.home}/data" />
-						<delete dir="${liferay.home}/deploy" />
 						<delete dir="${liferay.home}/logs" />
 					</then>
 				</if>
@@ -2402,22 +2575,6 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 		</if>
 
 		<delete file="create.sql" />
-	</target>
-
-	<target name="record-java-processes">
-		<if>
-			<os family="windows" />
-			<then>
-				<exec executable="${shell.executable}" output="java-processes">
-					<arg line="/c jps -q" />
-				</exec>
-			</then>
-			<else>
-				<exec executable="${shell.executable}" output="java-processes">
-					<arg line="-c jps -q" />
-				</exec>
-			</else>
-		</if>
 	</target>
 
 	<target name="record-test-package-names">
@@ -2653,6 +2810,8 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 	</target>
 
 	<target name="run-simple-server" depends="generate-test-properties">
+		<antcall target="clean-up-java-processes" inheritAll="false" />
+
 		<antcall target="rebuild-database" inheritAll="false" />
 
 		<antcall target="copy-optional-jars" inheritAll="false">
@@ -2915,7 +3074,7 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 
 				<antcall target="run-selenium-test" />
 
-				<sleep seconds="5" />
+				<sleep seconds="15" />
 
 				<exec dir="${simple.server.bin.dir}" executable="${simple.server.stop.executable}" resolveexecutable="true">
 					<arg line="${simple.server.stop.executable.arg.line}" />

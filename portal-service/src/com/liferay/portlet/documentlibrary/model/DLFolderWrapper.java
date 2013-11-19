@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.documentlibrary.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
@@ -31,6 +33,7 @@ import java.util.Map;
  * @see DLFolder
  * @generated
  */
+@ProviderType
 public class DLFolderWrapper implements DLFolder, ModelWrapper<DLFolder> {
 	public DLFolderWrapper(DLFolder dlFolder) {
 		_dlFolder = dlFolder;
@@ -1049,6 +1052,12 @@ public class DLFolderWrapper implements DLFolder, ModelWrapper<DLFolder> {
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _dlFolder.buildTreePath();
+	}
+
+	@Override
+	public void updateTreePath(java.lang.String treePath)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_dlFolder.updateTreePath(treePath);
 	}
 
 	@Override

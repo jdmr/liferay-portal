@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.journal.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
@@ -23,6 +25,7 @@ import com.liferay.portal.service.ServiceWrapper;
  * @see JournalFolderLocalService
  * @generated
  */
+@ProviderType
 public class JournalFolderLocalServiceWrapper
 	implements JournalFolderLocalService,
 		ServiceWrapper<JournalFolderLocalService> {
@@ -587,8 +590,7 @@ public class JournalFolderLocalServiceWrapper
 
 	@Override
 	public void rebuildTree(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.SystemException {
 		_journalFolderLocalService.rebuildTree(companyId);
 	}
 

@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.journal.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
@@ -31,6 +33,7 @@ import java.util.Map;
  * @see JournalFolder
  * @generated
  */
+@ProviderType
 public class JournalFolderWrapper implements JournalFolder,
 	ModelWrapper<JournalFolder> {
 	public JournalFolderWrapper(JournalFolder journalFolder) {
@@ -856,6 +859,12 @@ public class JournalFolderWrapper implements JournalFolder,
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _journalFolder.buildTreePath();
+	}
+
+	@Override
+	public void updateTreePath(java.lang.String treePath)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_journalFolder.updateTreePath(treePath);
 	}
 
 	@Override

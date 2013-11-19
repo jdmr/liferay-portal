@@ -316,7 +316,7 @@ if (Validator.isNotNull(content)) {
 								<liferay-ui:icon-help message="default-language-help" />
 							</span>
 
-							<c:if test="<%= article != null %>">
+							<c:if test="<%= (article != null) && !article.isNew() %>">
 								<span class="lfr-translation-manager-add-menu">
 									<liferay-ui:icon-menu
 										cssClass="add-translations-menu"
@@ -491,7 +491,9 @@ if (Validator.isNotNull(content)) {
 		</div>
 	</div>
 
-	<aui:input name="structureId" type="hidden" value="<%= structureId %>" />
+	<c:if test="<%= Validator.isNotNull(toLanguageId) %>">
+		<aui:input name="structureId" type="hidden" value="<%= structureId %>" />
+	</c:if>
 </div>
 
 <aui:script>
@@ -605,6 +607,7 @@ if (Validator.isNotNull(content)) {
 			function(event) {
 				if (confirm('<%= UnicodeLanguageUtil.get(pageContext, "selecting-a-new-structure-will-change-the-available-input-fields-and-available-templates") %>') && (document.<portlet:namespace />fm1.<portlet:namespace />ddmStructureId.value != event.ddmstructureid)) {
 					document.<portlet:namespace />fm1.<portlet:namespace />ddmStructureId.value = event.ddmstructureid;
+					document.<portlet:namespace />fm1.<portlet:namespace />structureId.value = event.ddmstructurekey;
 					document.<portlet:namespace />fm1.<portlet:namespace />templateId.value = "";
 
 					submitForm(document.<portlet:namespace />fm1, null, false, false);

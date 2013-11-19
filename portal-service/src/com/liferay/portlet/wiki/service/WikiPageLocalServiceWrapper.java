@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.wiki.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
@@ -23,6 +25,7 @@ import com.liferay.portal.service.ServiceWrapper;
  * @see WikiPageLocalService
  * @generated
  */
+@ProviderType
 public class WikiPageLocalServiceWrapper implements WikiPageLocalService,
 	ServiceWrapper<WikiPageLocalService> {
 	public WikiPageLocalServiceWrapper(
@@ -708,6 +711,13 @@ public class WikiPageLocalServiceWrapper implements WikiPageLocalService,
 		long nodeId, boolean head, int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _wikiPageLocalService.getPages(nodeId, head, start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.portlet.wiki.model.WikiPage> getPages(
+		long nodeId, boolean head, int status, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _wikiPageLocalService.getPages(nodeId, head, status, start, end);
 	}
 
 	@Override

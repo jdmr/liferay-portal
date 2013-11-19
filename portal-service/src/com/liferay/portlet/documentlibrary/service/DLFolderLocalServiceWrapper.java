@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.documentlibrary.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
@@ -23,6 +25,7 @@ import com.liferay.portal.service.ServiceWrapper;
  * @see DLFolderLocalService
  * @generated
  */
+@ProviderType
 public class DLFolderLocalServiceWrapper implements DLFolderLocalService,
 	ServiceWrapper<DLFolderLocalService> {
 	public DLFolderLocalServiceWrapper(
@@ -886,8 +889,7 @@ public class DLFolderLocalServiceWrapper implements DLFolderLocalService,
 
 	@Override
 	public void rebuildTree(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.SystemException {
 		_dlFolderLocalService.rebuildTree(companyId);
 	}
 
